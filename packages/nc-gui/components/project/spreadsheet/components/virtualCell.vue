@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="nc-virtual-cell">
     <v-lazy>
       <has-many-cell
-        ref="cell"
         v-if="hm"
+        ref="cell"
         :row="row"
         :value="row[`${hm._tn}List`]"
         :meta="meta"
@@ -14,11 +14,18 @@
         :is-new="isNew"
         :is-form="isForm"
         :breadcrumbs="breadcrumbs"
+        :is-locked="isLocked"
+        :required="required"
+        :is-public="isPublic"
+        :metas="metas"
+        :column="column"
+        :password="password"
         v-on="$listeners"
       />
       <many-to-many-cell
-        ref="cell"
         v-else-if="mm"
+        ref="cell"
+        :is-public="isPublic"
         :row="row"
         :value="row[`${mm._rtn}MMList`]"
         :meta="meta"
@@ -30,12 +37,18 @@
         :api="api"
         :is-form="isForm"
         :breadcrumbs="breadcrumbs"
+        :is-locked="isLocked"
+        :required="required"
+        :column="column"
+        :metas="metas"
+        :password="password"
         v-on="$listeners"
       />
       <belongs-to-cell
-        ref="cell"
-        :disabled-columns="disabledColumns"
         v-else-if="bt"
+        ref="cell"
+        :is-public="isPublic"
+        :disabled-columns="disabledColumns"
         :active="active"
         :row="row"
         :value="row[`${bt._rtn}Read`]"
@@ -47,22 +60,60 @@
         :is-new="isNew"
         :is-form="isForm"
         :breadcrumbs="breadcrumbs"
+        :is-locked="isLocked"
+        :metas="metas"
+        :column="column"
+        :password="password"
         v-on="$listeners"
       />
+      <lookup-cell
+        v-else-if="lookup"
+        :disabled-columns="disabledColumns"
+        :active="active"
+        :row="row"
+        :meta="meta"
+        :metas="metas"
+        :nodes="nodes"
+        :api="api"
+        :sql-ui="sqlUi"
+        :is-new="isNew"
+        :is-form="isForm"
+        :column="column"
+        :is-locked="isLocked"
+        v-on="$listeners "
+      />
+      <formula-cell
+        v-else-if="formula"
+        :row="row"
+        :column="column"
+      />
+      <rollup-cell
+        v-else-if="rollup"
+        :row="row"
+        :column="column"
+      />
     </v-lazy>
+    <span v-if="hint" class="nc-hint">{{ hint }}</span>
+    <div v-if="isLocked" class="nc-locked-overlay" />
   </div>
 </template>
 
 <script>
-import hasManyCell from "@/components/project/spreadsheet/components/virtualCell/hasManyCell";
-import manyToManyCell from "@/components/project/spreadsheet/components/virtualCell/manyToManyCell";
-import belongsToCell from "@/components/project/spreadsheet/components/virtualCell/belogsToCell";
+import RollupCell from './virtualCell/rollupCell'
+import FormulaCell from './virtualCell/formulaCell'
+import hasManyCell from './virtualCell/hasManyCell'
+import LookupCell from './virtualCell/lookupCell'
+import manyToManyCell from './virtualCell/manyToManyCell'
+import belongsToCell from './virtualCell/belongsToCell'
 
 // todo: optimize parent/child meta extraction
 
 export default {
-  name: "virtual-cell",
+  name: 'VirtualCell',
   components: {
+    RollupCell,
+    FormulaCell,
+    LookupCell,
     belongsToCell,
     manyToManyCell,
     hasManyCell
@@ -71,7 +122,7 @@ export default {
     breadcrumbs: {
       type: Array,
       default() {
-        return [];
+        return []
       }
     },
     column: [Object],
@@ -89,24 +140,39 @@ export default {
       type: Boolean,
       default: false
     },
-    disabledColumns: Object
+    disabledColumns: Object,
+    hint: String,
+    isLocked: Boolean,
+    required: Boolean,
+    isPublic: Boolean,
+    metas: Object,
+    password: String
   },
   computed: {
     hm() {
-      return this.column && this.column.hm;
+      return this.column && this.column.hm
     },
     bt() {
-      return this.column && this.column.bt;
+      return this.column && this.column.bt
     },
     mm() {
-      return this.column && this.column.mm;
+      return this.column && this.column.mm
+    },
+    lookup() {
+      return this.column && this.column.lk
+    },
+    formula() {
+      return this.column && this.column.formula
+    },
+    rollup() {
+      return this.column && this.column.rl
     }
   },
   methods: {
     async save(row) {
       if (row && this.$refs.cell && this.$refs.cell.saveLocalState) {
         try {
-          await this.$refs.cell.saveLocalState(row);
+          await this.$refs.cell.saveLocalState(row)
         } catch (e) {
         }
       }
@@ -116,7 +182,23 @@ export default {
 </script>
 
 <style scoped>
+.nc-hint {
+  font-size: .61rem;
+  color: grey;
+}
 
+.nc-virtual-cell {
+  position: relative;
+}
+
+.nc-locked-overlay {
+  position: absolute;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
 </style>
 <!--
 /**

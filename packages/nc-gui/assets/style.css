@@ -383,6 +383,10 @@ td .v-input--selection-controls {
   height: 100%;
 }
 
+.scroll-auto{
+  overflow: auto;
+}
+
 
 .xc-tabs .v-tabs-bar {
   border-bottom: solid 1px var(--v-primary-lighten2);
@@ -475,4 +479,9 @@ body.dark .toasted .primary.success, body.dark .toasted.toasted-primary.success 
 body.dark .toasted .primary.info, body.dark .toasted.toasted-primary.info {
   background: #0040bc !important;
   border-radius: 19px;
+}
+
+
+.v-date-picker-table{
+  height:auto !important;
 }

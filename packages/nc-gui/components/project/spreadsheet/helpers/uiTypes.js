@@ -1,41 +1,46 @@
-
-
 const uiTypes = [
   {
     name: 'ID',
-    icon: 'mdi-identifier',
+    icon: 'mdi-identifier'
   },
   {
     name: 'LinkToAnotherRecord',
     icon: 'mdi-link-variant',
+    virtual: 1
   },
+  // {
+  //   name: 'ForeignKey',
+  //   icon: 'mdi-link-variant',
+  //   virtual: 1
+  // },
   {
-    name: 'ForeignKey',
-    icon: 'mdi-link-variant',
+    name: 'Lookup',
+    icon: 'mdi-table-column-plus-before',
+    virtual: 1
   },
   {
     name: 'SingleLineText',
-    icon: 'mdi-format-color-text',
+    icon: 'mdi-format-color-text'
   },
   {
     name: 'LongText',
-    icon: 'mdi-text-subject',
+    icon: 'mdi-text-subject'
   },
   {
     name: 'Attachment',
-    icon: 'mdi-attachment',
+    icon: 'mdi-attachment'
   },
   {
     name: 'Checkbox',
-    icon: 'mdi-checkbox-marked-outline',
+    icon: 'mdi-checkbox-marked-outline'
   },
   {
     name: 'MultiSelect',
-    icon: 'mdi-format-list-bulleted-square',
+    icon: 'mdi-format-list-bulleted-square'
   },
   {
     name: 'SingleSelect',
-    icon: 'mdi-arrow-down-drop-circle',
+    icon: 'mdi-arrow-down-drop-circle'
   },
   // {
   //   name: 'Collaborator',
@@ -43,63 +48,65 @@ const uiTypes = [
   // },
   {
     name: 'Date',
-    icon:'mdi-calendar-month',
+    icon: 'mdi-calendar-month'
   },
   {
     name: 'Year',
-    icon: 'mdi-calendar',
+    icon: 'mdi-calendar'
   },
   {
     name: 'Time',
-    icon: 'mdi-clock',
+    icon: 'mdi-clock'
   },
   {
     name: 'PhoneNumber',
-    icon: 'mdi-file-phone',
+    icon: 'mdi-file-phone'
   },
   {
     name: 'Email',
-    icon: 'mdi-email',
+    icon: 'mdi-email'
   },
   {
     name: 'URL',
-    icon: 'mdi-web',
+    icon: 'mdi-web'
   },
   {
     name: 'Number',
-    icon: 'mdi-numeric',
+    icon: 'mdi-numeric'
   },
   {
     name: 'Decimal',
-    icon: 'mdi-decimal',
+    icon: 'mdi-decimal'
   },
   {
     name: 'Currency',
-    icon: 'mdi-currency-usd-circle-outline',
+    icon: 'mdi-currency-usd-circle-outline'
   },
   {
     name: 'Percent',
-    icon: 'mdi-percent-outline',
+    icon: 'mdi-percent-outline'
   },
   {
     name: 'Duration',
-    icon: 'mdi-timer-outline',
+    icon: 'mdi-timer-outline'
   },
   {
     name: 'Rating',
-    icon: 'mdi-star',
+    icon: 'mdi-star'
   },
   {
     name: 'Formula',
     icon: 'mdi-math-integral',
+    virtual: 1
   },
-  // {
-  //   name: 'Rollup',
-  //   icon: 'mdi-movie-roll',
-  // },
+  {
+    name: 'Rollup',
+    icon: 'mdi-movie-roll',
+    virtual: 1
+  },
   {
     name: 'Count',
-    icon: 'mdi-counter',
+    icon: 'mdi-counter'
   },
   // {
   //   name: 'Lookup',
@@ -107,28 +114,32 @@ const uiTypes = [
   // },
   {
     name: 'DateTime',
-    icon: 'mdi-calendar-clock',
+    icon: 'mdi-calendar-clock'
   },
-  {
-    name: 'CreateTime',
-    icon: 'mdi-calendar-clock',
-  },
+  // {
+  //   name: 'CreateTime',
+  //   icon: 'mdi-calendar-clock'
+  // },
   // {
   //   name: 'LastModifiedTime',
   //   icon: 'mdi-calendar-clock',
   // },
   {
     name: 'AutoNumber',
-    icon: 'mdi-numeric',
+    icon: 'mdi-numeric'
   },
   {
     name: 'Geometry',
-    icon: 'mdi-ruler-square-compass',
+    icon: 'mdi-ruler-square-compass'
+  },
+  {
+    name: 'JSON',
+    icon: 'mdi-code-json'
   },
   {
     name: 'SpecificDBType',
-    icon: 'mdi-database-settings',
-  },
+    icon: 'mdi-database-settings'
+  }
   // {
   //   name: 'Barcode',
   //   icon: 'mdi-barcode',
@@ -137,12 +148,19 @@ const uiTypes = [
   //   name: 'Button',
   //   icon: 'mdi-gesture-tap-button',
   // },
-];
+]
 
+const getUIDTIcon = (uidt) => {
+  return ([...uiTypes, {
+    name: 'CreateTime',
+    icon: 'mdi-calendar-clock'
+  }].find(t => t.name === uidt) || {}).icon
+}
 
 export {
-  uiTypes
+  uiTypes, getUIDTIcon
 }
+
 export default [
   'ID',
   'ForeignKey',
@@ -175,8 +193,44 @@ export default [
   'AutoNumber',
   'Barcode',
   'Button',
-  'SpecificDBType',
+  'SpecificDBType'
 ]
+
+export const UITypes = {
+  ID: 'ID',
+  ForeignKey: 'ForeignKey',
+  SingleLineText: 'SingleLineText',
+  LongText: 'LongText',
+  Attachment: 'Attachment',
+  Checkbox: 'Checkbox',
+  MultiSelect: 'MultiSelect',
+  SingleSelect: 'SingleSelect',
+  Collaborator: 'Collaborator',
+  Date: 'Date',
+  Year: 'Year',
+  Time: 'Time',
+  PhoneNumber: 'PhoneNumber',
+  Email: 'Email',
+  URL: 'URL',
+  Number: 'Number',
+  Decimal: 'Decimal',
+  Currency: 'Currency',
+  Percent: 'Percent',
+  Duration: 'Duration',
+  Rating: 'Rating',
+  Formula: 'Formula',
+  Rollup: 'Rollup',
+  Count: 'Count',
+  Lookup: 'Lookup',
+  DateTime: 'DateTime',
+  CreateTime: 'CreateTime',
+  LastModifiedTime: 'LastModifiedTime',
+  AutoNumber: 'AutoNumber',
+  Barcode: 'Barcode',
+  Button: 'Button',
+  SpecificDBType: 'SpecificDBType',
+  LinkToAnotherRecord: 'LinkToAnotherRecord'
+}
 
 /**
  * @copyright Copyright (c) 2021, Xgene Cloud Ltd

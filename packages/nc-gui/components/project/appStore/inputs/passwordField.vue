@@ -1,23 +1,28 @@
 <template>
   <v-text-field
+    v-model="localState"
     :type="show ? 'text' : 'password'"
     dense
     outlined
-    :rules="[v => !!v || !inputDetails.required  || 'Required']"
+    :rules="[v => !!v || !inputDetails.required || 'Required']"
     :name="inputDetails.key"
     :required="inputDetails.valid"
     hide-details="auto"
     :placeholder="inputDetails.placeholder || ''"
-    v-on="parentListeners" v-model="localState" class="caption">
-    <template v-slot:append>
-      <v-icon @click="show = !show">{{show ? 'visibility_off' : 'visibility'}}</v-icon>
+    class="caption"
+    v-on="parentListeners"
+  >
+    <template #append>
+      <v-icon @click="show = !show">
+        {{ show ? 'visibility_off' : 'visibility' }}
+      </v-icon>
     </template>
   </v-text-field>
 </template>
 
 <script>
 export default {
-  name: "passwordField",
+  name: 'PasswordField',
   props: {
     value: String,
     inputDetails: Object
@@ -31,13 +36,13 @@ export default {
         return this.value
       },
       set(val) {
-        this.$emit('input', val);
+        this.$emit('input', val)
       }
     },
     parentListeners() {
-      const $listeners = {};
-      return $listeners;
-    },
+      const $listeners = {}
+      return $listeners
+    }
   }
 }
 </script>

@@ -12,53 +12,57 @@
       <!--      </tr>-->
       <!--      </thead>-->
       <tbody>
-        <tr>
-          <td>
-            <!-- Export all metadata from the meta tables to meta directory. -->
-            {{ $t('management.meta.operation_1.desc') }}
-          </td>
-          <td>
-            <v-btn
-              min-width="150"
-              color="primary"
-              small
-              outlined
-              @click="exportMeta"
-              :loading="loading === 'export-file'"
-            >
-              <v-icon small>mdi-export</v-icon>&nbsp;
-              <!-- Export to file -->
-              {{ $t('management.meta.operation_1') }}
-            </v-btn>
-          </td>
-        </tr>
+        <!--        <tr>-->
+        <!--          <td>-->
+        <!--            &lt;!&ndash; Export all metadata from the meta tables to meta directory. &ndash;&gt;-->
+        <!--            {{ $t('management.meta.export_to_file.desc') }}-->
+        <!--          </td>-->
+        <!--          <td>-->
+        <!--            <v-btn-->
+        <!--              min-width="150"-->
+        <!--              color="primary"-->
+        <!--              small-->
+        <!--              outlined-->
+        <!--              :loading="loading === 'export-file'"-->
+        <!--              @click="exportMeta"-->
+        <!--            >-->
+        <!--              <v-icon small>-->
+        <!--                mdi-export-->
+        <!--              </v-icon>&nbsp;-->
+        <!--              &lt;!&ndash; Export to file &ndash;&gt;-->
+        <!--              {{ $t('management.meta.export_to_file.title') }}-->
+        <!--            </v-btn>-->
+        <!--          </td>-->
+        <!--        </tr>-->
 
-        <tr>
-          <td>
-            <!-- Import all metadata from the meta directory to meta tables. -->
-            {{ $t('management.meta.operation_2.desc') }}
-          </td>
-          <td>
-            <v-btn
-              :loading="loading === 'import-file'"
-              min-width="150"
-              color="info"
-              small
-              outlined
-              @click="importMeta"
-            >
-              <v-icon small>mdi-import</v-icon>&nbsp;
+        <!--        <tr>-->
+        <!--          <td>-->
+        <!--            &lt;!&ndash; Import all metadata from the meta directory to meta tables. &ndash;&gt;-->
+        <!--            {{ $t('management.meta.import.desc') }}-->
+        <!--          </td>-->
+        <!--          <td>-->
+        <!--            <v-btn-->
+        <!--              :loading="loading === 'import-file'"-->
+        <!--              min-width="150"-->
+        <!--              color="info"-->
+        <!--              small-->
+        <!--              outlined-->
+        <!--              @click="importMeta"-->
+        <!--            >-->
+        <!--              <v-icon small>-->
+        <!--                mdi-import-->
+        <!--              </v-icon>&nbsp;-->
 
-              <!-- Import -->
-              {{ $t('management.meta.operation_2') }}
-            </v-btn>
-          </td>
-        </tr>
+        <!--              &lt;!&ndash; Import &ndash;&gt;-->
+        <!--              {{ $t('management.meta.import.title') }}-->
+        <!--            </v-btn>-->
+        <!--          </td>-->
+        <!--        </tr>-->
 
         <tr>
           <td>
             <!-- Export project meta to zip file and download. -->
-            {{ $t('management.meta.operation_3.desc') }}
+            {{ $t('management.meta.export_to_zip.desc') }}
           </td>
           <td>
             <v-btn
@@ -69,16 +73,18 @@
               :loading="loading === 'export-zip'"
               @click="exportMetaZip()"
             >
-              <v-icon small>mdi-export</v-icon>&nbsp;
+              <v-icon small>
+                mdi-export
+              </v-icon>&nbsp;
               <!-- Export zip -->
-              {{ $t('management.meta.operation_3') }}
+              {{ $t('management.meta.export_to_zip.title') }}
             </v-btn>
           </td>
         </tr>
         <tr>
           <td>
             <!-- Import project meta zip file and restart. -->
-            {{ $t('management.meta.operation_4.desc') }}
+            {{ $t('management.meta.import_zip.desc') }}
           </td>
           <td>
             <v-btn
@@ -89,208 +95,219 @@
               outlined
               @click="$refs.importFile.click()"
             >
-              <v-icon small>mdi-import</v-icon>&nbsp;
+              <v-icon small>
+                mdi-import
+              </v-icon>&nbsp;
 
               <!-- Import Zip -->
-              {{ $t('management.meta.operation_4') }}
+              {{ $t('management.meta.import_zip.title') }}
             </v-btn>
 
             <input
+              v-show="false"
+              ref="importFile"
               type="file"
               accept=".zip"
               @change="importMetaZip"
-              v-show="false"
-              ref="importFile"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <!-- Clear all metadata from meta tables. -->
-            {{ $t('management.meta.operation_5.desc') }}
-          </td>
-          <td>
-            <v-btn
-              :loading="loading === 'reset-metadata'"
-              min-width="150"
-              color="error"
-              small
-              outlined
-              @click="resetMeta"
             >
-              <v-icon small>mdi-delete-variant</v-icon>&nbsp;
-              <!-- Reset -->
-              {{ $t('management.meta.operation_5') }}
-            </v-btn>
           </td>
         </tr>
+      <!--        <tr>-->
+      <!--          <td>-->
+      <!--            &lt;!&ndash; Clear all metadata from meta tables. &ndash;&gt;-->
+      <!--            {{ $t('management.meta.reset.desc') }}-->
+      <!--          </td>-->
+      <!--          <td>-->
+      <!--            <v-btn-->
+      <!--              :loading="loading === 'reset-metadata'"-->
+      <!--              min-width="150"-->
+      <!--              color="error"-->
+      <!--              small-->
+      <!--              outlined-->
+      <!--              @click="resetMeta"-->
+      <!--            >-->
+      <!--              <v-icon small>-->
+      <!--                mdi-delete-variant-->
+      <!--              </v-icon>&nbsp;-->
+      <!--              &lt;!&ndash; Reset &ndash;&gt;-->
+      <!--              {{ $t('management.meta.reset.title') }}-->
+      <!--            </v-btn>-->
+      <!--          </td>-->
+      <!--        </tr>-->
       </tbody>
     </v-simple-table>
 
     <dlg-label-submit-cancel
-      type="primary"
       v-if="dialogShow"
-      :actionsMtd="confirmAction"
-      :dialogShow="dialogShow"
+      type="primary"
+      :actions-mtd="confirmAction"
+      :dialog-show="dialogShow"
       :heading="confirmMessage"
-    >
-    </dlg-label-submit-cancel>
+    />
+
+    <!--    <import-template-->
+    <!--      :nodes="{dbAlias: 'db'}"-->
+    <!--    />-->
   </div>
 </template>
 
 <script>
-import DlgLabelSubmitCancel from '@/components/utils/dlgLabelSubmitCancel';
+import DlgLabelSubmitCancel from '@/components/utils/dlgLabelSubmitCancel'
+// import ImportTemplate from '~/components/project/settings/importTemplate'
 
 export default {
-  name: 'xc-meta',
+  name: 'XcMeta',
   components: {
-    DlgLabelSubmitCancel,
+    // ImportTemplate,
+    DlgLabelSubmitCancel
   },
   data: () => ({
     loading: null,
     dialogShow: false,
     confirmAction: null,
-    confirmMessage: '',
+    confirmMessage: ''
   }),
   methods: {
     async exportMeta() {
-      this.dialogShow = true;
-      this.confirmMessage = 'Do you want to export metadata from meta tables?';
-      this.confirmAction = async act => {
+      this.dialogShow = true
+      this.confirmMessage = 'Do you want to export metadata from meta tables?'
+      this.confirmAction = async(act) => {
         if (act === 'hideDialog') {
-          this.dialogShow = false;
+          this.dialogShow = false
         } else {
-          this.loading = 'export-file';
+          this.loading = 'export-file'
           try {
+            // todo: set env based on `nodes` prop
             await this.$store.dispatch('sqlMgr/ActSqlOp', [
               {
                 // dbAlias: 'db',
-                env: 'dev',
+                env: '_noco'
               },
-              'xcMetaTablesExportDbToLocalFs',
-            ]);
-            this.$toast.success('Successfully exported metadata').goAway(3000);
+              'xcMetaTablesExportDbToLocalFs'
+            ])
+            this.$toast.success('Successfully exported metadata').goAway(3000)
           } catch (e) {
-            this.$toast.error('Some internal error occurred').goAway(3000);
+            this.$toast.error(e.message).goAway(3000)
           }
-          this.dialogShow = false;
-          this.loading = null;
+          this.dialogShow = false
+          this.loading = null
         }
-      };
+      }
     },
     async exportMetaZip() {
-      this.dialogShow = true;
-      this.confirmMessage = 'Do you want to export metadata from meta tables?';
-      this.confirmAction = async act => {
+      this.dialogShow = true
+      this.confirmMessage = 'Do you want to export metadata from meta tables?'
+      this.confirmAction = async(act) => {
         if (act === 'hideDialog') {
-          this.dialogShow = false;
+          this.dialogShow = false
         } else {
-          this.loading = 'export-zip';
-          let data;
+          this.loading = 'export-zip'
+          let data
           try {
             data = await this.$store.dispatch('sqlMgr/ActSqlOp', [
               {
                 // dbAlias: 'db',
-                env: 'dev',
+                env: '_noco'
               },
               'xcMetaTablesExportDbToZip',
               null,
               null,
               {
-                responseType: 'blob',
-              },
-            ]);
-            const url = window.URL.createObjectURL(new Blob([data], { type: 'application/zip' }));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'meta.zip'); //or any other extension
-            document.body.appendChild(link);
-            link.click();
-            this.$toast.success('Successfully exported metadata').goAway(3000);
+                responseType: 'blob'
+              }
+            ])
+            const url = window.URL.createObjectURL(new Blob([data], { type: 'application/zip' }))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', 'meta.zip') // or any other extension
+            document.body.appendChild(link)
+            link.click()
+            this.$toast.success('Successfully exported metadata').goAway(3000)
           } catch (e) {
-            this.$toast.error('Some internal error occurred').goAway(3000);
+            this.$toast.error(e.message).goAway(3000)
           }
-          this.dialogShow = false;
-          this.loading = null;
+          this.dialogShow = false
+          this.loading = null
         }
-      };
+      }
     },
     async resetMeta() {
-      this.dialogShow = true;
-      this.confirmMessage = 'Do you want to clear metadata from meta tables?';
-      this.confirmAction = async act => {
+      this.dialogShow = true
+      this.confirmMessage = 'Do you want to clear metadata from meta tables?'
+      this.confirmAction = async(act) => {
         if (act === 'hideDialog') {
-          this.dialogShow = false;
+          this.dialogShow = false
         } else {
-          this.loading = 'reset-metadata';
+          this.loading = 'reset-metadata'
           try {
             await this.$store.dispatch('sqlMgr/ActSqlOp', [
               {
                 // dbAlias: 'db',
-                env: 'dev',
+                env: '_noco'
               },
-              'xcMetaTablesReset',
-            ]);
-            this.$toast.success('Metadata cleared successfully').goAway(3000);
+              'xcMetaTablesReset'
+            ])
+            this.$toast.success('Metadata cleared successfully').goAway(3000)
           } catch (e) {
-            this.$toast.error('Some internal error occurred').goAway(3000);
+            this.$toast.error(e.message).goAway(3000)
           }
-          this.dialogShow = false;
-          this.loading = null;
+          this.dialogShow = false
+          this.loading = null
         }
-      };
+      }
     },
 
     async importMeta() {
-      this.dialogShow = true;
-      this.confirmMessage = 'Do you want to import metadata from meta directory?';
-      this.confirmAction = async act => {
+      this.dialogShow = true
+      this.confirmMessage = 'Do you want to import metadata from meta directory?'
+      this.confirmAction = async(act) => {
         if (act === 'hideDialog') {
-          this.dialogShow = false;
+          this.dialogShow = false
         } else {
-          this.loading = 'import-file';
+          this.loading = 'import-file'
           try {
             await this.$store.dispatch('sqlMgr/ActSqlOp', [
               {
-                env: 'dev',
+                env: '_noco'
               },
-              'xcMetaTablesImportLocalFsToDb',
-            ]);
+              'xcMetaTablesImportLocalFsToDb'
+            ])
 
-            this.$toast.success('Metadata imported successfully').goAway(3000);
+            this.$toast.success('Metadata imported successfully').goAway(3000)
           } catch (e) {
-            this.$toast.error('Some internal error occurred').goAway(3000);
+            this.$toast.error(e.message).goAway(3000)
           }
-          this.dialogShow = false;
-          this.loading = null;
+          this.dialogShow = false
+          this.loading = null
         }
-      };
+      }
     },
     async importMetaZip() {
       if (this.$refs.importFile && this.$refs.importFile.files && this.$refs.importFile.files[0]) {
-        const zipFile = this.$refs.importFile.files[0];
-        this.loading = 'import-zip';
+        const zipFile = this.$refs.importFile.files[0]
+        this.loading = 'import-zip'
         try {
-          this.$refs.importFile.value = '';
-          await this.$store.dispatch('sqlMgr/ActUpload', [
+          this.$refs.importFile.value = ''
+          await this.$store.dispatch('sqlMgr/ActUploadOld', [
             {
-              // dbAlias: 'db',
-              env: 'dev',
+              env: '_noco'
             },
             'xcMetaTablesImportZipToLocalFsAndDb',
-            {},
-            zipFile,
-          ]);
-          this.$toast.success('Successfully imported metadata').goAway(3000);
+            {
+              importsToCurrentProject: true
+            },
+            zipFile
+          ])
+          this.$toast.success('Successfully imported metadata').goAway(3000)
         } catch (e) {
-          this.$toast.error('Some internal error occurred').goAway(3000);
+          this.$toast.error(e.message).goAway(3000)
         }
-        this.dialogShow = false;
-        this.loading = null;
+        this.dialogShow = false
+        this.loading = null
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped>

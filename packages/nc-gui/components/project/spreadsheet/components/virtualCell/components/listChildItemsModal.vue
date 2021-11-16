@@ -1,36 +1,44 @@
 <template>
   <v-dialog v-model="show" width="600" content-class="dialog">
-    <v-icon small class="close-icon" @click="$emit('input',false)">mdi-close</v-icon>
+    <v-icon small class="close-icon" @click="$emit('input',false)">
+      mdi-close
+    </v-icon>
     <list-child-items
       v-if="show"
       ref="child"
+      :type="type"
+      :row-id="rowId"
       :local-state="localState"
       :is-new="isNew"
       :size="10"
       :meta="meta"
-      :parent-meta="meta"
+      :password="password"
+      :parent-meta="parentMeta"
       :primary-col="primaryCol"
       :primary-key="primaryKey"
       :api="api"
       :query-params="queryParams"
       v-bind="$attrs"
+      :read-only="readOnly"
+      :is-public="isPublic"
+      :column="column"
       v-on="$listeners"
-
     />
   </v-dialog>
-
 </template>
 
 <script>
-import Pagination from "@/components/project/spreadsheet/components/pagination";
-import ListChildItems from "@/components/project/spreadsheet/components/virtualCell/components/listChildItems";
+import ListChildItems from '@/components/project/spreadsheet/components/virtualCell/components/listChildItems'
 
 export default {
-  name: "listChildItemsModal",
-  components: {ListChildItems, Pagination},
+  name: 'ListChildItemsModal',
+  components: { ListChildItems },
   props: {
+    type: String,
+    readOnly: Boolean,
     localState: Array,
     isNew: Boolean,
+    password: String,
     value: Boolean,
     title: {
       type: String,
@@ -39,7 +47,7 @@ export default {
     queryParams: {
       type: Object,
       default() {
-        return {};
+        return {}
       }
     },
     primaryKey: String,
@@ -48,27 +56,31 @@ export default {
     parentMeta: Object,
     size: Number,
     api: [Object, Function],
-    mm: [Object, Boolean]
+    mm: [Object, Boolean],
+    isPublic: Boolean,
+    rowId: [String, Number],
+    column: Object
   },
   data: () => ({
     data: null,
     page: 1
   }),
+  computed: {
+    show: {
+      set(v) {
+        this.$emit('input', v)
+      },
+      get() {
+        return this.value
+      }
+    }
+  },
   mounted() {
   },
   methods: {
     async loadData() {
       if (this.$refs && this.$refs.child) {
-        this.$refs.child.loadData();
-      }
-    }
-  },
-  computed: {
-    show: {
-      set(v) {
-        this.$emit('input', v)
-      }, get() {
-        return this.value;
+        this.$refs.child.loadData()
       }
     }
   }

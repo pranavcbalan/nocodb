@@ -1,12 +1,14 @@
-import {IWebhookNotificationAdapter, XcWebhookNotificationPlugin} from "nc-plugin";
-import Teams from "./Teams";
+import {
+  IWebhookNotificationAdapter,
+  XcWebhookNotificationPlugin
+} from 'nc-plugin';
 
+import Teams from './Teams';
 
 class TeamsPlugin extends XcWebhookNotificationPlugin {
-
   private static notificationAdapter: Teams;
 
-  public  getAdapter(): IWebhookNotificationAdapter {
+  public getAdapter(): IWebhookNotificationAdapter {
     return TeamsPlugin.notificationAdapter;
   }
 
@@ -14,7 +16,6 @@ class TeamsPlugin extends XcWebhookNotificationPlugin {
     TeamsPlugin.notificationAdapter = new Teams();
     await TeamsPlugin.notificationAdapter.init();
   }
-
 }
 
 export default TeamsPlugin;

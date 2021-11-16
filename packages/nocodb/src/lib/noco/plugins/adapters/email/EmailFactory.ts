@@ -1,9 +1,9 @@
-import SES from "./SES";
-import SMTP from "./SMTP";
-import IEmailAdapter from "../../../../../interface/IEmailAdapter";
+import IEmailAdapter from '../../../../../interface/IEmailAdapter';
+
+import SES from './SES';
+import SMTP from './SMTP';
 
 export default class EmailFactory {
-
   private static instance: IEmailAdapter;
 
   // tslint:disable-next-line:typedef
@@ -33,11 +33,7 @@ export default class EmailFactory {
         break;
     }
   }
-
-
-
 }
-
 
 /**
  * @copyright Copyright (c) 2021, Xgene Cloud Ltd
@@ -61,4 +57,3 @@ export default class EmailFactory {
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-

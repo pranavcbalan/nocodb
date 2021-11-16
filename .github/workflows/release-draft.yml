@@ -1,5 +1,4 @@
-
-name: Release Draft Generator
+name: "Release : Draft Notes"
 
 on:
   workflow_dispatch:
@@ -7,13 +6,14 @@ on:
       tag:
         description: "Tag"
         required: true
+      prev_tag:
+        description: "Previous Tag"
+        required: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
       - name: Create tag
         uses: actions/github-script@v3
         with:
@@ -26,7 +26,11 @@ jobs:
               sha: context.sha
             })
 
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - uses: actions/setup-node@v2
         with:
           node-version: 14
-      - run: "npx github-release-notes@0.17.2  release --token ${{ secrets.GH_TOKEN }}  --draft --tags ${{ github.event.inputs.tag }}"
+      - run: "npx github-release-notes@0.17.2  release --token ${{ secrets.GH_TOKEN }}  --draft --tags ${{ github.event.inputs.tag }}..${{ github.event.inputs.prev_tag }}"

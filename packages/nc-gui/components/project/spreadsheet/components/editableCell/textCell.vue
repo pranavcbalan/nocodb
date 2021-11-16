@@ -1,15 +1,12 @@
 <template>
-  <input v-on="parentListeners" v-model="localState">
+  <input v-model="localState" v-on="parentListeners">
 </template>
 
 <script>
 export default {
-  name: "textCell",
+  name: 'TextCell',
   props: {
     value: String
-  },
-  mounted() {
-    this.$el.focus();
   },
   computed: {
     localState: {
@@ -17,25 +14,28 @@ export default {
         return this.value
       },
       set(val) {
-        this.$emit('input', val);
+        this.$emit('input', val)
       }
     },
     parentListeners() {
-      const $listeners = {};
+      const $listeners = {}
 
       if (this.$listeners.blur) {
-        $listeners.blur = this.$listeners.blur;
+        $listeners.blur = this.$listeners.blur
       }
       if (this.$listeners.focus) {
-        $listeners.focus = this.$listeners.focus;
+        $listeners.focus = this.$listeners.focus
       }
 
       if (this.$listeners.cancel) {
-        $listeners.cancel = this.$listeners.cancel;
+        $listeners.cancel = this.$listeners.cancel
       }
 
-      return $listeners;
-    },
+      return $listeners
+    }
+  },
+  mounted() {
+    this.$el.focus()
   }
 }
 </script>

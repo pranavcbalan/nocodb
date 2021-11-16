@@ -1,38 +1,33 @@
 <template>
   <v-app>
-    <snackbar/>
-    <v-content>
+    <v-main>
+      <v-app-bar v-show="false" dark />
       <v-container fluid style="">
-
-        <nuxt/>
+        <nuxt />
       </v-container>
-    </v-content>
-
+    </v-main>
   </v-app>
 </template>
 
 <script>
 
+export default {
+  components: {},
+  data: () => ({}),
+  computed: {},
+  watch: {},
+  mounted() {
+  },
+  async created() {
+    // this.$vuetify.theme.dark = false;
+  },
 
-  export default {
-    components: {},
-    data: () => ({}),
-    computed: {},
-    mounted() {
-    },
-    watch: {},
-
-    methods: {},
-    async created() {
-      // this.$vuetify.theme.dark = false;
-    }
-  };
+  methods: {}
+}
 </script>
 <style scoped>
 
 </style>
-
-
 
 <!--
 /**

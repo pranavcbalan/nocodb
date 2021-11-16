@@ -3,19 +3,25 @@ export default {
   owner: '*',
   guest: {},
   editor: {
-    airTable:true,
-    column:true
+    airTable: true,
+    xcDatatableEditable: true,
+    column: true,
+    tableAttachment: true,
+    tableRowUpdate: true,
+    rowComments: true
   },
   commenter: {
-    airTable:true,
-    column:true
+    airTable: true,
+    column: true,
+    rowComments: true
   },
   viewer: {
-    airTable:true,
-    column:true
+    airTable: true,
+    column: true
   },
-  user:{
-    projectCreate:true
+  user: {
+    projectCreate: true,
+    projectActions: true
   }
 }
 /**

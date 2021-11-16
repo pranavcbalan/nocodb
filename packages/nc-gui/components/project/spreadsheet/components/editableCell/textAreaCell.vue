@@ -1,25 +1,19 @@
 <template>
-    <textarea v-on="parentListeners"
-              rows="4"
-              ref="textarea"
-              v-model="localState"
-              @keydown.alt.enter.stop
-              @keydown.shift.enter.stop
-    ></textarea>
-
+  <textarea
+    ref="textarea"
+    v-model="localState"
+    rows="4"
+    v-on="parentListeners"
+    @keydown.alt.enter.stop
+    @keydown.shift.enter.stop
+  />
 </template>
 
 <script>
 export default {
-  name: "textAreaCell",
+  name: 'TextAreaCell',
   props: {
     value: String
-  },
-  created() {
-    this.localState = this.value;
-  },
-  mounted() {
-    this.$refs.textarea && this.$refs.textarea.focus();
   },
   computed: {
 
@@ -28,21 +22,27 @@ export default {
         return this.value
       },
       set(val) {
-        this.$emit('input', val);
+        this.$emit('input', val)
       }
     },
     parentListeners() {
-      const $listeners = {};
+      const $listeners = {}
 
       if (this.$listeners.blur) {
-        $listeners.blur = this.$listeners.blur;
+        $listeners.blur = this.$listeners.blur
       }
       if (this.$listeners.focus) {
-        $listeners.focus = this.$listeners.focus;
+        $listeners.focus = this.$listeners.focus
       }
 
-      return $listeners;
-    },
+      return $listeners
+    }
+  },
+  created() {
+    this.localState = this.value
+  },
+  mounted() {
+    this.$refs.textarea && this.$refs.textarea.focus()
   }
 }
 </script>

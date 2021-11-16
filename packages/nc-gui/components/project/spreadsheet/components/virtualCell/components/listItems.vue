@@ -1,34 +1,40 @@
 <template>
   <v-dialog v-model="show" width="600" content-class="dialog">
-    <v-icon small class="close-icon" @click="$emit('input',false)">mdi-close</v-icon>
+    <v-icon small class="close-icon" @click="$emit('input',false)">
+      mdi-close
+    </v-icon>
     <v-card width="600">
-      <v-card-title class="textColor--text mx-2 justify-center">{{ title }}
-
+      <v-card-title class="textColor--text mx-2 justify-center">
+        {{ title }}
       </v-card-title>
 
       <v-card-title>
         <v-text-field
+          v-model="query"
           hide-details
           dense
           outlined
           placeholder="Filter query"
-          v-model="query"
           class=" caption search-field ml-2"
           @keydown.enter="loadData"
         >
           <template #append>
-            <x-icon tooltip="Apply filter" small icon.class="mt-1" @click="loadData">mdi-keyboard-return
+            <x-icon tooltip="Apply filter" small icon.class="mt-1" @click="loadData">
+              mdi-keyboard-return
             </x-icon>
           </template>
         </v-text-field>
-        <v-spacer></v-spacer>
+        <v-spacer />
 
-        <v-icon small class="mr-1" @click="loadData()">mdi-reload</v-icon>
-        <v-btn small class="caption mr-2" color="primary" @click="$emit('add-new-record')">
-          <v-icon small>mdi-plus</v-icon>&nbsp;
+        <v-icon small class="mr-1" @click="loadData()">
+          mdi-reload
+        </v-icon>
+        <v-btn v-if="!isPublic" small class="caption mr-2" color="primary" @click="$emit('add-new-record')">
+          <v-icon small>
+            mdi-plus
+          </v-icon>&nbsp;
           New Record
         </v-btn>
-
       </v-card-title>
 
       <v-card-text>
@@ -36,24 +42,24 @@
           <template v-if="data && data.list && data.list.length">
             <v-card
               v-for="(ch,i) in data.list"
+              :key="i"
+              v-ripple
               class="ma-2  child-card"
               outlined
-              v-ripple
               @click="$emit('add',ch)"
-              :key="i"
             >
               <v-card-text class="primary-value textColor--text text--lighten-2 d-flex">
                 <span class="font-weight-bold"> {{ ch[primaryCol] }}&nbsp;</span>
-                <span class="grey--text caption primary-key "
-                      v-if="primaryKey">(Primary Key : {{ ch[primaryKey] }})</span>
-                <v-spacer/>
+                <span
+                  v-if="primaryKey"
+                  class="grey--text caption primary-key "
+                >(Primary Key : {{ ch[primaryKey] }})</span>
+                <v-spacer />
                 <v-chip v-if="hm && ch[`${hm._rtn}Read`] && ch[`${hm._rtn}Read`][hmParentPrimaryValCol]" x-small>
                   {{ ch[`${hm._rtn}Read`][hmParentPrimaryValCol] }}
                 </v-chip>
               </v-card-text>
             </v-card>
-
-
           </template>
 
           <div v-else-if="data" class="text-center py-15 textLight--text">
@@ -64,26 +70,26 @@
       <v-card-actions class="justify-center py-2  flex-column">
         <pagination
           v-if="data && data.list && data.list.length"
+          v-model="page"
           :size="size"
           :count="data.count"
-          v-model="page"
-          @input="loadData"
           class="mb-3"
-        ></pagination>
+          @input="loadData"
+        />
       </v-card-actions>
     </v-card>
   </v-dialog>
-
 </template>
 
 <script>
-import Pagination from "@/components/project/spreadsheet/components/pagination";
+import Pagination from '@/components/project/spreadsheet/components/pagination'
 
 export default {
-  name: "listItems",
-  components: {Pagination},
+  name: 'ListItems',
+  components: { Pagination },
   props: {
     value: Boolean,
+    tn: String,
     hm: [Object, Function, Boolean],
     title: {
       type: String,
@@ -92,7 +98,7 @@ export default {
     queryParams: {
       type: Object,
       default() {
-        return {};
+        return {}
       }
     },
     primaryKey: String,
@@ -102,55 +108,70 @@ export default {
     api: [Object, Function],
     mm: [Object, Function],
     parentId: [String, Number],
-    parentMeta: [Object]
+    parentMeta: [Object],
+    isPublic: Boolean,
+    password: String
   },
   data: () => ({
     data: null,
     page: 1,
     query: ''
   }),
-  mounted() {
-    this.loadData();
-  },
-  methods: {
-    async loadData() {
-      if (!this.api) return;
-
-      let where = this.queryParams.where || '';
-      if (this.query) {
-        where += (where ? '~and' : '') + `(${this.primaryCol},like,%${this.query}%)`;
-      }
-
-      if (this.mm) {
-        this.data = await this.api.paginatedM2mNotChildrenList({
-          limit: this.size,
-          offset: this.size * (this.page - 1),
-          ...this.queryParams,
-          where
-        }, this.mm.vtn, this.parentId)
-
-      } else {
-        this.data = await this.api.paginatedList({
-          limit: this.size,
-          offset: this.size * (this.page - 1),
-          ...this.queryParams,
-          where
-        })
-      }
-    }
-  },
   computed: {
     show: {
       set(v) {
         this.$emit('input', v)
-      }, get() {
-        return this.value;
+      },
+      get() {
+        return this.value
       }
     },
     hmParentPrimaryValCol() {
       return this.hm &&
         this.parentMeta &&
         this.parentMeta.columns.find(v => v.pv)._cn
+    }
+  },
+  mounted() {
+    this.loadData()
+  },
+  methods: {
+    async loadData() {
+      if (this.isPublic) {
+        this.data = await this.$store.dispatch('sqlMgr/ActSqlOp', [null, 'sharedViewNestedDataGet', {
+          password: this.password,
+          limit: this.size,
+          tn: this.tn,
+          view_id: this.$route.params.id,
+          offset: this.size * (this.page - 1),
+          query: this.query
+        }])
+      } else {
+        if (!this.api) {
+          return
+        }
+
+        let where = this.queryParams.where || ''
+        if (this.query) {
+          where += (where ? '~and' : '') + `(${this.primaryCol},like,%${this.query}%)`
+        }
+
+        if (this.mm) {
+          this.data = await this.api.paginatedM2mNotChildrenList({
+            limit: this.size,
+            offset: this.size * (this.page - 1),
+            ...this.queryParams,
+            where
+          }, this.mm.vtn, this.parentId)
+        } else {
+          this.data = await this.api.paginatedList({
+            limit: this.size,
+            offset: this.size * (this.page - 1),
+            ...this.queryParams,
+            where
+          })
+        }
+      }
     }
   }
 }
@@ -181,7 +202,6 @@ export default {
     box-shadow: 0 0 .2em var(--v-textColor-lighten5)
   }
 }
-
 
 .primary-value {
   .primary-key {

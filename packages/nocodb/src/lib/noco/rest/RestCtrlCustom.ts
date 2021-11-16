@@ -1,19 +1,22 @@
-import {NextFunction, Router, Request, Response} from "express";
-import {BaseModelSql} from "../../dataMapper";
-import {Route} from "../../../interface/config";
 import autoBind from 'auto-bind';
+import { NextFunction, Request, Response, Router } from 'express';
 
-import {RestBaseCtrl} from "./RestBaseCtrl";
+import { Route } from '../../../interface/config';
+import { BaseModelSql } from '../../dataMapper';
+
+import { RestBaseCtrl } from './RestBaseCtrl';
 
 export class RestCtrlCustom extends RestBaseCtrl {
-
   public app: any;
-
 
   protected models: { [key: string]: BaseModelSql };
 
-
-  constructor(app: any, models: { [key: string]: BaseModelSql }, routes: Route[], middlewareBody?: string) {
+  constructor(
+    app: any,
+    models: { [key: string]: BaseModelSql },
+    routes: Route[],
+    middlewareBody?: string
+  ) {
     super();
     autoBind(this);
     this.app = app;
@@ -24,18 +27,25 @@ export class RestCtrlCustom extends RestBaseCtrl {
     this.rootPath = '';
   }
 
-  protected async middleware(_req: Request, _res: Response, next: NextFunction): Promise<any> {
+  protected async middleware(
+    _req: Request,
+    _res: Response,
+    next: NextFunction
+  ): Promise<any> {
     next();
     // return Promise.resolve(undefined);
   }
 
-  protected postMiddleware(_req: Request, _res: Response, _next: NextFunction): Promise<any> {
+  protected postMiddleware(
+    _req: Request,
+    _res: Response,
+    _next: NextFunction
+  ): Promise<any> {
     return Promise.resolve(undefined);
   }
 
-
   get controllerName(): string {
-    return "__xc_custom";
+    return '__xc_custom';
   }
 }
 /**

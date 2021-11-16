@@ -1,22 +1,19 @@
-import {Request, Response, Router} from "express";
-import {BaseModelSql} from "../../dataMapper";
-import {Acls} from "../../../interface/config";
 import autoBind from 'auto-bind';
+import { Request, Response, Router } from 'express';
 
+import { Acls } from '../../../interface/config';
+import { BaseModelSql } from '../../dataMapper';
 
 function parseHrtimeToSeconds(hrtime) {
-  const seconds = (hrtime[0] + (hrtime[1] / 1e6)).toFixed(3);
+  const seconds = (hrtime[0] + hrtime[1] / 1e6).toFixed(3);
   return seconds;
 }
 
-
 export class RestCtrlMin {
-
   public app: any;
   private models: { [key: string]: BaseModelSql };
   // @ts-ignore
   private acls: Acls;
-
 
   constructor(app: any, models: { [key: string]: BaseModelSql }, acls: Acls) {
     autoBind(this);
@@ -24,7 +21,6 @@ export class RestCtrlMin {
     this.models = models;
     this.acls = acls;
   }
-
 
   public async list(req: Request | any, res): Promise<void> {
     const startTime = process.hrtime();
@@ -52,7 +48,7 @@ export class RestCtrlMin {
 
   public async delete(req: Request | any, res): Promise<void> {
     const data = await req.model.delByPk(req.params.id, null, req);
-    this.app.xcMeta.meta
+    this.app.xcMeta.meta;
     res.xcJson(data);
   }
 
@@ -103,7 +99,6 @@ export class RestCtrlMin {
     res.json(data);
   }
 
-
   public async bulkInsert(req: Request | any, res: Response): Promise<void> {
     const data = await req.model.insertb(req.body);
     res.json(data);
@@ -115,7 +110,7 @@ export class RestCtrlMin {
   }
 
   public async bulkDelete(req: Request | any, res: Response): Promise<void> {
-    const data = await req.model.delb(req.body)
+    const data = await req.model.delb(req.body);
     res.json(data);
   }
 
@@ -255,16 +250,19 @@ export class RestCtrlMin {
     }
   */
 
-
   public mapRoutes(router: Router): any {
-    router.get('/api/v2/:_tn', (req: any, res: any, next) => {
-      req.model = Object.values(this.models).find(m => m._tn === req.params._tn)
-      res.xcJson = res.json
-      next();
-    }, this.list)
+    router.get(
+      '/api/v2/:_tn',
+      (req: any, res: any, next) => {
+        req.model = Object.values(this.models).find(
+          m => m._tn === req.params._tn
+        );
+        res.xcJson = res.json;
+        next();
+      },
+      this.list
+    );
   }
-
-
 }
 
 /**

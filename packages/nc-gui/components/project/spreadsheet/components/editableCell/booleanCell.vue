@@ -1,18 +1,15 @@
 <template>
   <div class="d-flex align-center " :class="{'justify-center':!isForm}">
-    <input v-on="parentListeners" type="checkbox" v-model="localState">
+    <input v-model="localState" type="checkbox" v-on="parentListeners">
   </div>
 </template>
 
 <script>
 export default {
-  name: "boolean-cell",
+  name: 'BooleanCell',
   props: {
-    value: [String,Number, Boolean],
+    value: [String, Number, Boolean],
     isForm: Boolean
-  },
-  mounted() {
-    this.$el.focus();
   },
   computed: {
     localState: {
@@ -20,23 +17,26 @@ export default {
         return this.value
       },
       set(val) {
-        this.$emit('input', val);
+        this.$emit('input', val)
         // this.$emit('update');
       }
     },
 
     parentListeners() {
-      const $listeners = {};
+      const $listeners = {}
 
-      if (this.$listeners.blur) {
-        $listeners.blur = this.$listeners.blur;
-      }
-      if (this.$listeners.focus) {
-        $listeners.focus = this.$listeners.focus;
-      }
+      // if (this.$listeners.blur) {
+      //   $listeners.blur = this.$listeners.blur
+      // }
+      // if (this.$listeners.focus) {
+      //   $listeners.focus = this.$listeners.focus
+      // }
 
-      return $listeners;
-    },
+      return $listeners
+    }
+  },
+  mounted() {
+    this.$el.focus()
   }
 }
 </script>
